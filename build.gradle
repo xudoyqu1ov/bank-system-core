@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'maven-publish'  // Applies the Maven Publish plugin
+
+}
+
+group = 'uz.bank'
+version = '1.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'Bank System Core'
+                description = 'this is core for our bank system project. It contains all the core logic and entities'
+                url = 'https://github.com/xudoyqu1ov/bank-system-core'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'xudoyqu1ov'
+                        name = 'Abdulaziz'
+                        email = 'khudoyqulov.04@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/xudoyqu1ov/bank-system-core.git'
+                    developerConnection = 'scm:git:ssh://github.com/your-repo-url.git'
+                    url = 'https://github.com/xudoyqu1ov/bank-system-core'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/xudoyqu1ov/bank-system-core")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
